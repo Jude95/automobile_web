@@ -1,0 +1,229 @@
+<h1 id="新仿知乎api文档">新仿知乎API文档</h1>
+
+<h3 id="规则">规则</h3>
+
+<ol>
+<li><p>参数表单提交，返回json</p></li>
+<li><p>status表示状态：</p>
+
+<ul><li>200 —— 成功</li>
+<li>0 —— 失败</li>
+<li>213 —— token无效</li></ul></li>
+<li><p>为方便开发学习，info输出sql语句</p></li>
+</ol>
+
+<h3 id="1-注册">1. 注册</h3>
+
+<p>地址：<a href="http://redrock.hotwoo.cn/zhihu/register.php">http://redrock.hotwoo.cn/zhihu/register.php</a> <br>
+参数：</p>
+
+<blockquote>
+  <p>name: <br>
+  password:</p>
+</blockquote>
+
+<p>返回：</p>
+
+<blockquote>
+  <p>{ <br>
+      “status”: 200, <br>
+      “info”: “INSERT INTO person ( name , password ) VALUES ( ‘jimm’ , ‘33’ )”, <br>
+      “data”: null <br>
+  }</p>
+</blockquote>
+
+<h3 id="2-登录">2. 登录</h3>
+
+<p>地址：<a href="http://redrock.hotwoo.cn/zhihu/login.php">http://redrock.hotwoo.cn/zhihu/login.php</a> <br>
+参数</p>
+
+<blockquote>
+  <p>name: <br>
+  password:</p>
+</blockquote>
+
+<p>返回：</p>
+
+<blockquote>
+  <p>{ <br>
+      “status”: 200, <br>
+      “info”: “SELECT * FROM person WHERE name = ‘jimm’ AND password = ‘33’”, <br>
+      “data”: { <br>
+          “id”: “50”, <br>
+          “name”: “jimm”, <br>
+          “face”: null, <br>
+          “password”: “33”, <br>
+          “token”: “501343d0d2a14eb67885ee4f8c2ef31d95fb8859” <br>
+      } <br>
+  }</p>
+</blockquote>
+
+<p>返回用户信息及token</p>
+
+<h3 id="3-修改头像">3. 修改头像</h3>
+
+<p>地址：<a href="http://redrock.hotwoo.cn/zhihu/modifyFace.php">http://redrock.hotwoo.cn/zhihu/modifyFace.php</a> <br>
+参数</p>
+
+<blockquote>
+  <p>token: <br>
+  face：</p>
+</blockquote>
+
+<p>传用户头像地址。本API不负责图片文件储存，图片储存请右转阿里，七牛。把图片地址穿上来。</p>
+
+<p>返回</p>
+
+<blockquote>
+  <p>{ <br>
+      “status”: 200, <br>
+      “info”: “UPDATE person SET face = 33333 WHERE id = 50”, <br>
+      “data”: null <br>
+  }</p>
+</blockquote>
+
+<h3 id="4-取问题列表">4. 取问题列表</h3>
+
+<p>地址：<a href="http://redrock.hotwoo.cn/zhihu/getQuestionList.php">http://redrock.hotwoo.cn/zhihu/getQuestionList.php</a> <br>
+参数</p>
+
+<blockquote>
+  <p>page: <br>
+  count:</p>
+</blockquote>
+
+<p>count可空，每页条数，默认20条。 <br>
+返回</p>
+
+<blockquote>
+  <p>{ <br>
+      “status”: 200, <br>
+      “info”: “SELECT * FROM question ORDER BY date DESC LIMIT 3,3”, <br>
+      “data”: { <br>
+      “status”: 200, <br>
+      “info”: “SELECT question.id,question.title,question.content,question.bestAnswerId,question.date,question.authorId,person.name as authorName,person.face as authorFace FROM person RIGHT JOIN question ON person.id = question.authorId ORDER BY date DESC LIMIT 45,3”, <br>
+      “data”: { <br>
+          “totalCount”: “52”, <br>
+          “totalPage”: 18, <br>
+          “questions”: [ <br>
+              { <br>
+                  “id”: “12”, <br>
+                  “title”: “shit!!!”, <br>
+                  “content”: “测试3”, <br>
+                  “bestAnswerId”: null, <br>
+                  “date”: “2015-04-14 23:35:22”, <br>
+                  “authorId”: “3”, <br>
+                  “authorName”: “jack”, <br>
+                  “authorFace”: null <br>
+              }, <br>
+              { <br>
+                  “id”: “11”, <br>
+                  “title”: “shit!!!”, <br>
+                  “content”: “测试3”, <br>
+                  “bestAnswerId”: null, <br>
+                  “date”: “2015-04-14 23:35:04”, <br>
+                  “authorId”: “3”, <br>
+                  “authorName”: “jack”, <br>
+                  “authorFace”: null <br>
+              }, <br>
+              { <br>
+                  “id”: “10”, <br>
+                  “title”: “what a fuck4”, <br>
+                  “content”: “测试4”, <br>
+                  “bestAnswerId”: null, <br>
+                  “date”: “2015-04-14 20:03:31”, <br>
+                  “authorId”: “0”, <br>
+                  “authorName”: null, <br>
+                  “authorFace”: null <br>
+              } <br>
+          ] <br>
+      } <br>
+  }</p>
+</blockquote>
+
+<h3 id="5-取回答列表">5. 取回答列表</h3>
+
+<p>地址：<a href="http://redrock.hotwoo.cn/zhihu/getAnswerList.php">http://redrock.hotwoo.cn/zhihu/getAnswerList.php</a> <br>
+参数：</p>
+
+<blockquote>
+  <p>page: <br>
+  questionId: <br>
+  count: <br>
+  desc</p>
+</blockquote>
+
+<p>count可空，每页条数，默认20条。 <br>
+<p>desc可空，是否倒序，填true 或 false <br>
+返回：</p>
+
+<blockquote>
+  <p>{ <br>
+      “status”: 200, <br>
+      “info”: “SELECT answer.id,answer.content,answer.date,answer.authorId,person.name as authorName,person.face as authorFace FROM person RIGHT JOIN answer ON person.id = answer.authorId WHERE questionId = 33 LIMIT 0,20”, <br>
+      “data”: { <br>
+          “totalCount”: “2”, <br>
+          “totalPage”: 1, <br>
+          “answers”: [ <br>
+              { <br>
+                  “id”: “42”, <br>
+                  “content”: “hehe”, <br>
+                  “date”: “2015-05-02 16:49:14”, <br>
+                  “authorId”: “21”, <br>
+                  “authorName”: “zhs”, <br>
+                  “authorFace”: null <br>
+              }, <br>
+              { <br>
+                  “id”: “43”, <br>
+                  “content”: “??”, <br>
+                  “date”: “2015-05-02 16:49:20”, <br>
+                  “authorId”: “21”, <br>
+                  “authorName”: “zhs”, <br>
+                  “authorFace”: null <br>
+              } <br>
+          ] <br>
+      } <br>
+  }</p>
+</blockquote>
+
+<h3 id="6-发布问题">6. 发布问题</h3>
+
+<p>地址：<a href="http://redrock.hotwoo.cn/zhihu/question.php">http://redrock.hotwoo.cn/zhihu/question.php</a> <br>
+参数：</p>
+
+<blockquote>
+  <p>title: <br>
+  content: <br>
+  token:</p>
+</blockquote>
+
+<p>返回：</p>
+
+<blockquote>
+  <p>{ <br>
+      “status”: 200, <br>
+      “info”: “INSERT INTO question ( authorId , title , content , date ) \n\tVALUES ( ‘19’ , ‘这是标题’,’这是描述’,now())”, <br>
+      “data”: null <br>
+  }</p>
+</blockquote>
+
+<h3 id="7-发布回答">7. 发布回答</h3>
+
+<p>地址：<a href="http://redrock.hotwoo.cn/zhihu/answer.php">http://redrock.hotwoo.cn/zhihu/answer.php</a> <br>
+参数：</p>
+
+<blockquote>
+  <p>questionId: <br>
+  content: <br>
+  token</p>
+</blockquote>
+
+<p>返回：</p>
+
+<blockquote>
+  <p>{ <br>
+      “status”: 200, <br>
+      “info”: “INSERT INTO answer ( authorId , questionId , content , date ) VALUES ( ‘34’ , ‘13’,’hehe’,now())”, <br>
+      “data”: null <br>
+  }</p>
+</blockquote>
