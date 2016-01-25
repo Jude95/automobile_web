@@ -1,7 +1,6 @@
 <?php
 	include("connect.php");
 
-	$returnData = array("status" => 0,"info" => "","data"=> null);
 	$dataInfo = array("totalCount" => 0,"totalPage" =>0,"questions"=> null);
 
 	$page = addslashes($_POST["page"]);
@@ -24,9 +23,5 @@
 	$dataInfo["curPage"] = $page;
 	$dataInfo["totalPage"] = (int)($totalCount['count']/$count)+1;
 
-	$returnData["status"] = 200;
-	$returnData["info"] = $sql;
-	$returnData["data"] = $dataInfo;
-	echo json_encode($returnData);
-
+	echo json_encode($dataInfo);
 ?>

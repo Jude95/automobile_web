@@ -1,22 +1,28 @@
 <?php
  include("connect.php" );
 
- $result = array("status" => 0,"info" => "","data"=> null);
  $name = addslashes($_POST["name"]);
  $password = addslashes($_POST["password"]);
 
  if ($name == "" || $password == "") {
- 	$result["status"] = 0;
- 	$result["info"] =  "name 或 password 不能为空";
+ 	header("http/1.1 400 Bad Request");
+ 	$result["error"] =  "name 或 password 不能为空";
  }else{
-	 $query = "INSERT INTO person ( name , password ) VALUES ( '".$name."' , '".$password."' )";
-	 if (mysql_query($query)) {
-	 	$result["status"] = 200;
-	 	$result["info"] = $query;
-	 }else{
-	 	$result["status"] = 0;
-	 	$result["info"] =  mysql_error();
-	 }
+ 	$query = "SELECT * FROM person WHERE name = '{$name}'";
+	$user = mysql_query($query);
+ 	if ($row = mysql_fetch_assoc($user)) {
+ 		header("http/1.1 400 Bad Request");
+ 		$result["error"] =  $name." 已被使用";
+ 	}else{
+		$query = "INSERT INTO person ( name , password ) VALUES ( '".$name."' , '".$password."' )";
+		 if (mysql_query($query)) {
+		 	$result["info"] =  $query;
+		 }else{
+		 	header("http/1.1 500 Internal Server Error");
+		 	$result["error"] =  mysql_error();
+		 }
+ 	}
+
  }
  echo json_encode($result);
 ?>

@@ -5,8 +5,8 @@
 			if ($row = mysql_fetch_array($result)) {
 			 	return $row["userId"];
 			}else{
-				$returnData["status"] = 213;
-				$returnData["info"] = "不要瞎搞!".$query;
+				header("http/1.1 401 Unauthorized");
+				$returnData["error"] = "token:".$token." 无效";
 			 	return -1;
 			}
 	}
