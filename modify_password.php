@@ -4,12 +4,11 @@
 $api = 'https://webapi.sms.mob.com/sms/verify';
 $appkey = 'f24bd7349e2c';
 
- $name = addslashes($_POST["name"]);
  $account = addslashes($_POST["account"]);
  $password = md5(addslashes($_POST["password"]));
  $code = addslashes($_POST["code"]);
 
- if ($name == "" || $account == ""  || $password == "") {
+ if ($account == ""  || $password == "") {
  	header("http/1.1 400 Bad Request");
  	$result["error"] =  "name,account或password不能为空";
  }else{
@@ -24,16 +23,17 @@ $appkey = 'f24bd7349e2c';
 	 	$query = "SELECT * FROM account WHERE account = '{$account}'";
 		$user = mysql_query($query);
 	 	if ($row = mysql_fetch_assoc($user)) {
-	 		header("http/1.1 400 Bad Request");
-	 		$result["error"] =  $name." 已被使用";
-	 	}else{
-			$query = "INSERT INTO account ( name,account , password,manager ) VALUES ( '{$name}','{$account}','{$password}','false')";
+	 		$query = "UPDATE account set password = '{$password}' WHERE account = '{$account}'";
 			 if (mysql_query($query)) {
-			 	$result["info"] =  "注册成功";
+			 	$result["info"] =  "修改成功";
 			 }else{
 			 	header("http/1.1 500 Internal Server Error");
 			 	$result["error"] =  mysql_error();
 			 }
+
+	 	}else{
+	 		header("http/1.1 400 Bad Request");
+	 		$result["error"] =  $account."不存在";
 	 	}
 	}else if ($response->{'status'}==468) {
 		header("http/1.1 400 Bad Request");
