@@ -1,5 +1,5 @@
 <?php
- include("connect.php" );
+ include("../connect.php" );
 
  $account = addslashes($_POST["account"]);
 $query = "SELECT * FROM account WHERE account = '{$account}'";

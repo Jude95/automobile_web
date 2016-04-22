@@ -1,9 +1,9 @@
 <?php
 
 	/**
-	*0:未授权
-	*1:已授权
-	*2.普通管理员
+	*0:已注册无任何权限
+	*1:查看所有数据
+	*2.数据编辑
 	*3.超级管理员
 	*/
 	function checkToken($permission,&$returnData){
@@ -13,13 +13,15 @@
 			$result = mysql_query($query);
 			if ($row = mysql_fetch_array($result)) {
 				$cur_permission = 0;
-				if ($row["manager"]==2) {
-					$cur_permission = 3;
+				if (strtotime("{$row["service_begin"]} +1 year") > time()) {
+					$cur_permission = 1;
 				}
-				if ($row["manager"]==1) {
+				if ($row["manager"]==2) {
 					$cur_permission = 2;
 				}
-
+				if ($row["manager"]==3) {
+					$cur_permission = 3;
+				}
 				if ($cur_permission >= $permission) {
 					return $row["user_id"];
 				}else{
@@ -49,7 +51,6 @@
            if (substr($name, 0, 5) == 'HTTP_')   
            {  
                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;  
-               //echo str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))));
            }  
        }  
        return $headers;  

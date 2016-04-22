@@ -1,6 +1,6 @@
 <?php
-include("connect.php");
-include("token.php");
+include("../connect.php");
+include("../token.php");
 $user = checkToken(3,$result);
 if ($user == -1) {
 	echo json_encode($result);
