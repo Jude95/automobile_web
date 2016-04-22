@@ -10,6 +10,7 @@ $id = addslashes($_POST["id"]);
 $sql="SELECT 
 		line.id as line_id,
 		line.name as line_name,
+		type.id,
 		type.name, 
 		power , 
 		displacement, 

@@ -6,15 +6,15 @@ if ($user == -1) {
 	echo json_encode($result);
 	return;
 }
-$key = addslashes($_POST["word"]);
-$sql="	SELECT 
-			line.id,
-			brand.name as line_name,
-			brand.id as line_id,
-			line.name,
-			line.word 
-		FROM vendor RIGHT JOIN line ON vendor.id = line.vendor_id 
-		where line.word like '%{$key}%' OR line.name like '%{$key}%'";
+$type = addslashes($_POST["type"]);
+$drawing_number = addslashes($_POST["brand"]);
+$sql="SELECT 
+	id,
+	type,
+	brand,
+	avatar,
+	drawing_number 
+ FROM part where type = '{$type}' AND drawing_number LIKE '%{$drawing_number}%' ";
 
 $sqlresult = mysql_query($sql);
 $result = array();

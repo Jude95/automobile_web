@@ -1,17 +1,18 @@
 <?php
 include("../../connect.php");
 include("../../token.php");
+include("../../utils.php");
 $user = checkToken(2,$result);
 if ($user == -1) {
 	echo json_encode($result);
 	return;
 }
 $id = addslashes($_POST["id"]);
-$line_id = addslashes($_POST["brand_id"]);
+$vendor_id = addslashes($_POST["vendor_id"]);
 $name = addslashes($_POST["name"]);
 $word = addslashes($_POST["word"]);
 
-$sql = "SELECT * FROM vendor WHERE id = '{$id}'";
+$sql = "SELECT * FROM line WHERE id = '{$id}'";
 $sqlresult = mysql_query($sql);
 if ($row = mysql_fetch_assoc($sqlresult)) {
 	if (!is_super($user)&&$row["author_id"]!=$user) {
@@ -20,9 +21,9 @@ if ($row = mysql_fetch_assoc($sqlresult)) {
 		echo json_encode($result);
 		return;
 	}
-	$sql = "UPDATE vendor SET name = '{$name}',brand_id = '{$brand_id}'  WHERE id = '{$id}'";
+	$sql = "UPDATE line SET name = '{$name}',vendor_id = '{$vendor_id}' , word = '{$word}' WHERE id = '{$id}'";
 }else{
-	$sql = "INSERT INTO vendor ( name , line_id ,author_id) VALUES ( '{$name}' , '{$line_id}','{$user}')";
+	$sql = "INSERT INTO line ( name , vendor_id , word,author_id) VALUES ( '{$name}' , '{$vendor_id}','{$word}','{$user}')";
 }
 
 if (mysql_query($sql)) {

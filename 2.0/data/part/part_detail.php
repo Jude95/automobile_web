@@ -15,7 +15,7 @@ $sql="SELECT
 	note,
 	drawing_number ,
 	picture
- FROM assemble LEFT JOIN part ON assemble.part_id =  part.id where part.id = '{$id}' LIMIT 1";
+ FROM part where part.id = '{$id}' LIMIT 1";
 $sqlresult = mysql_query($sql);
 
 if($row = mysql_fetch_assoc($sqlresult)){

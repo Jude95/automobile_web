@@ -7,7 +7,7 @@ if ($user == -1) {
 	return;
 }
 $part_id = addslashes($_POST["part_id"]);
-$model_id = addslashes($_POST["type_id"]);
+$type_id = addslashes($_POST["type_id"]);
 $note = addslashes($_POST["note"]);
 
 

@@ -1,6 +1,6 @@
 <?php
- include("connect.php" );
- include("utils.php");
+ include("../connect.php" );
+ include("../utils.php");
  // 配置项
 $api = 'https://webapi.sms.mob.com/sms/verify';
 $appkey = 'f24bd7349e2c';

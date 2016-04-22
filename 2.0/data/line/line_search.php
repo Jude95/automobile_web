@@ -6,16 +6,16 @@ if ($user == -1) {
 	echo json_encode($result);
 	return;
 }
-$id = addslashes($_POST["id"]);
+$key = addslashes($_POST["word"]);
 $sql="	SELECT 
-			brand.name as line_name,
-			brand.id as line_id,
-			brand.avatar as line_avatar,
-			vendor.id,
-			vendor.name
-		FROM brand RIGHT JOIN vender ON brand.id = vender.brand_id 
-		where brand.id = '{$id}'";
-$result = array();
+			line.id,
+			vendor.name as vendor_name,
+			vendor.id as vendor_id,
+			line.name,
+			line.word 
+		FROM vendor RIGHT JOIN line ON vendor.id = line.vendor_id 
+		where line.word like '%{$key}%' OR line.name like '%{$key}%'";
+
 $sqlresult = mysql_query($sql);
 $result = array();
 while($row = mysql_fetch_assoc($sqlresult)){

@@ -12,7 +12,6 @@ $sqlresult = mysql_query($sql);
 while($row = mysql_fetch_assoc($sqlresult)){
 	unset($row["password"]);
 	$row["service_begin"] = strtotime($row["service_begin"]);
-	$row["manager"]=$row["manager"]>=1?true:false;
 	$result[] = $row;
 }
 echo json_encode($result);

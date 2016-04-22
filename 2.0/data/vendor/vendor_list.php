@@ -6,17 +6,17 @@ if ($user == -1) {
 	echo json_encode($result);
 	return;
 }
-$type = addslashes($_POST["type"]);
-$brand = addslashes($_POST["brand"]);
+$id = addslashes($_POST["id"]);
 $sql="SELECT 
-	id,
-	type,
-	brand,
-	avatar,
-	drawing_number 
- FROM part where type = '{$type}' AND brand LIKE '%{$brand}%' ";
-$sqlresult = mysql_query($sql);
+			brand.name as brand_name,
+			brand.id as brand_id,
+			brand.avatar as brand_avatar,
+			vendor.id,
+			vendor.name
+		FROM brand RIGHT JOIN vendor ON brand.id = vendor.brand_id 
+		where vendor.brand_id = '{$id}'";
 $result = array();
+$sqlresult = mysql_query($sql);
 while($row = mysql_fetch_assoc($sqlresult)){
 	$result[] = $row;
 }

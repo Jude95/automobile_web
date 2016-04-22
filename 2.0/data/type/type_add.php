@@ -1,6 +1,7 @@
 <?php
 include("../../connect.php");
 include("../../token.php");
+include("../../utils.php");
 $user = checkToken(2,$result);
 if ($user == -1) {
 	echo json_encode($result);
@@ -52,6 +53,7 @@ if ($row = mysql_fetch_assoc($sqlresult)) {
 			displacement_tech = '{$displacement_tech}' ,
 			word = '{$word}' 
 		WHERE id = '{$id}'";
+
 }else{
 	$sql = "INSERT INTO type ( 
 		line_id,

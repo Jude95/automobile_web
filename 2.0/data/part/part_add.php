@@ -12,6 +12,7 @@ $type = addslashes($_POST["type"]);
 $brand = addslashes($_POST["brand"]);
 $drawing_number = addslashes($_POST["drawing_number"]);
 $avatar = addslashes($_POST["avatar"]);
+$note = addslashes($_POST["note"]);
 $picture = addslashes($_POST["picture"]);
 
 //将图片url转换成图片信息对象，再转换成json保存数据库
@@ -37,13 +38,13 @@ if ($row = mysql_fetch_assoc($sqlresult)) {
 	$sql = "UPDATE part SET 
 		type = '{$type}' , 
 		brand = '{$brand}', 
-		brand = '{$drawing_number}', 
-		drawing_number = '{$brand}', 
+		drawing_number = '{$drawing_number}', 
 		avatar = '{$avatar}', 
-		picture = '{$images}'
+		picture = '{$images}',
+		note = '{$note}'
 		WHERE id = '{$id}'";
 }else{
-	$sql = "INSERT INTO part ( type , brand , drawing_number, avatar,picture,author_id) VALUES (  '{$type}','{$brand}','{$drawing_number}','{$avatar}','{$images}','{$user}')";
+	$sql = "INSERT INTO part ( type , brand , drawing_number, avatar,picture,author_id,note) VALUES (  '{$type}','{$brand}','{$drawing_number}','{$avatar}','{$images}','{$user}','{$note}')";
 }
 if (mysql_query($sql)) {
 	$result["info"] = "编辑成功";
